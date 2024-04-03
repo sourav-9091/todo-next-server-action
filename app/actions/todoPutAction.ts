@@ -6,11 +6,15 @@ import { revalidatePath } from "next/cache";
 const addTodo = async (formData: FormData) => {
     const todo = formData.get('todo') as string;
 
-    await prisma.todo.create({
-        data: {
-            title: todo,
-        }
-    });
+    try {
+        await prisma.todo.create({
+            data: {
+                title: todo,
+            }
+        });
+    } catch (error) {
+        return error;
+    }
 
     revalidatePath('/todos')
 }

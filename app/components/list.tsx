@@ -1,10 +1,19 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { getTodos } from "@/app/actions/todosGetAction";
+import { Todo } from '@prisma/client';
 
-const List = async () => {
-    const todos = await getTodos();
+const List = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+      const fetchData = async () => {
+          const todos = await getTodos();
+          setTodos(todos);
+      };
+      fetchData();
+  }, []);
   return (
     <ul className="list-disc">
     {todos.map((todo) => (
